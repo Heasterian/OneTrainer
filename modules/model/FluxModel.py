@@ -200,7 +200,7 @@ class FluxModel(BaseModel):
                 text,
                 padding='max_length',
                 truncation=True,
-                max_length=77,
+                max_length= min(self.tokenizer_1.model_max_length, self.tokenizer_2.model_max_length),
                 return_tensors="pt",
             )
             tokens_1 = tokenizer_output.input_ids.to(self.text_encoder_1.device)
@@ -210,7 +210,7 @@ class FluxModel(BaseModel):
                 text,
                 padding='max_length',
                 truncation=True,
-                max_length=77,
+                max_length=min(self.tokenizer_1.model_max_length, self.tokenizer_2.model_max_length),
                 return_tensors="pt",
             )
             tokens_2 = tokenizer_output.input_ids.to(self.text_encoder_2.device)
@@ -246,7 +246,7 @@ class FluxModel(BaseModel):
             )
             if text_encoder_2_output is None:
                 text_encoder_2_output = torch.zeros(
-                    size=(batch_size, 77, 4096),
+                    size=(batch_size, min(self.tokenizer_1.model_max_length, self.tokenizer_2.model_max_length), 4096),
                     device=train_device,
                     dtype=self.train_dtype.torch_dtype(),
                 )
