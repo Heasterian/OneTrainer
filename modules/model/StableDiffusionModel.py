@@ -201,7 +201,7 @@ class StableDiffusionModel(BaseModel):
                 text,
                 padding='max_length',
                 truncation=True,
-                max_length=self.text_encoder.max_position_embeddings,
+                max_length=self.text_encoder.config.max_position_embeddings,
                 return_tensors="pt",
             )
             tokens = tokenizer_output.input_ids.to(self.text_encoder.device)
